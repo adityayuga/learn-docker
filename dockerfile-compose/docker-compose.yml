@@ -7,30 +7,17 @@ services:
       - 6377:6379
     networks:
       - mynetwork
-  postgres:
-    container_name: postgres-compose
-    image: postgres:latest
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_HOST=postgres
-      - POSTGRES_DB=tokopedia
-    networks:
-      - mynetwork
   app-golang:
-    image: golang4
+    container_name: golang-compose
+    image: app-golang:0.4
     ports:
       - 8007:8080
+    depends_on:
+      - redis
     environment:
       - REDIS_HOST=redis-compose
-      - REDIS_PORT=6377
-      - PG_HOST=postgres-compose
-      - PG_PORT=5432
-      - PG_USER=user
-      - PG_PASSWORD=pass
-      - PG_DBNAME=tokopedia
+      - REDIS_PORT=6379
+      #- REDIS_PORT=6377
     networks:
       - mynetwork
 networks: 
