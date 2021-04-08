@@ -1,0 +1,8 @@
+#Dockerfile-test
+FROM golang:1.14.4
+
+COPY . .
+
+RUN go build -o /usr/bin/my-golang
+
+CMD ["my-golang"]
