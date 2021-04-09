@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// parse env
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPort := os.Getenv("REDIS_PORT")
 
@@ -25,8 +26,10 @@ func main() {
 		if err != nil {
 			log.Println(err)
 			fmt.Fprintf(w, err.Error())
+			return
 		}
 		fmt.Fprintf(w, fmt.Sprintf("Hello %s", name))
+		return
 	})
 
 	http.ListenAndServe(":8080", nil)

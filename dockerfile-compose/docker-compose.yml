@@ -7,17 +7,36 @@ services:
       - 6377:6379
     networks:
       - mynetwork
+  postgres:
+    container_name: postgres-compose
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=tokopedia-learn
+    networks:
+      - mynetwork
   app-golang:
     container_name: golang-compose
-    image: app-golang:0.4
+    image: app-golang:0.5
     ports:
       - 8007:8080
     depends_on:
       - redis
+      - postgres
     environment:
       - REDIS_HOST=redis-compose
       - REDIS_PORT=6379
+      - POSTGRES_HOST=postgres-compose
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=user
+      - POSTGRES_PASS=pass
+      - POSTGRES_DB_NAME=tokopedia-learn
       #- REDIS_PORT=6377
+    #command: ["./wait-for-postgres.sh", "postgres-compose", "user", "pass"]
     networks:
       - mynetwork
 networks: 
